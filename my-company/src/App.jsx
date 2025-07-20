@@ -11,10 +11,10 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/src/components/Home.jsx" element={<Home />} />
-        <Route path="/src/components/About.jsx" element={<About />} />
-        <Route path="/src/components/Services.jsx" element={<Services />} />
-        <Route path="/src/components/Contact.jsx" element={<Contact />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
     </Router>
