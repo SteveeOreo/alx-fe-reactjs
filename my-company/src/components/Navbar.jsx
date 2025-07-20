@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   return (
     <nav style={{
-      background: '#282c34',
+      backgroundColor: '#282c34',
       padding: '10px',
       display: 'flex',
       justifyContent: 'space-around',
