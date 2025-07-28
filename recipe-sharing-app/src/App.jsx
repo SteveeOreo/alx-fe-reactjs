@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Router>
       <div style={{ padding: '1rem' }}>
-        <h1>🍲 Recipe Sharing App</h1>
+        <h1>Recipe Sharing App</h1>
         <AddRecipeForm />
         <SearchBar />
         <Routes>

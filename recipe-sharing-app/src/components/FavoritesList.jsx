@@ -11,7 +11,7 @@ export default function FavoritesList() {
 
   return (
     <div>
-      <h2>⭐ My Favorites</h2>
+      <h2>My Favorites</h2>
       {favoriteRecipes.length === 0 ? (
         <p>No favorite recipes yet.</p>
       ) : (
