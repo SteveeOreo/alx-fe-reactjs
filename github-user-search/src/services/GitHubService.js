@@ -1,5 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
+
 export const fetchUserData = async (username) => {
-  const res = await axios.get(`https://api.github.com/users/${username}`);
-  return res.data;
+  try {
+    const response = await axios.get(`https://api.github.com/users/${username}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || 'User not found';
+  }
 };
