@@ -1,6 +1,5 @@
-// src/pages/Home.jsx
 function Home() {
-    return <h2>Welcome to the Home Page</h2>;
+    return <h1 className="text-2xl">Welcome to GitHub User Search</h1>;
   }
-  export default Home;
   
+  export default Home;

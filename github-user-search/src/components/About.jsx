@@ -1,6 +1,5 @@
-// src/pages/About.jsx
 function About() {
-    return <h2>About Us</h2>;
+    return <p className="text-lg">This app lets you search GitHub profiles using their username.</p>;
   }
-  export default About;
   
+  export default About;
