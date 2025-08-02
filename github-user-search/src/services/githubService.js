@@ -1,7 +1,7 @@
 // src/services/githubService.js
 import axios from "axios";
 
-export default async function fetchUsers({ username, location, minRepos }) {
+export default async function fetchUserData({ username, location, minRepos }) {
   let queryParts = [];
 
   if (username) queryParts.push(`${username} in:login`);
