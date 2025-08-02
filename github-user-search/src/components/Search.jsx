@@ -20,7 +20,7 @@ export default function Search() {
       setResults(users);
       setError(null);
     } catch (err) {
-      setError("No users found matching the criteria.");
+      setError("Looks like we cant find the user");
       setResults([]);
     } finally {
       setLoading(false);
