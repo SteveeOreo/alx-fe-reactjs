@@ -1,24 +1,37 @@
-import { useParams, Link } from 'react-router-dom';
-import recipesData from '../data.json';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import recipesData from "../data.json"; // or from your API/store
 
 export default function RecipeDetail() {
   const { id } = useParams();
-  const recipe = recipesData.find((r) => r.id === parseInt(id));
+  const [recipe, setRecipe] = useState(null);
 
-  if (!recipe) return <p className="p-6">Recipe not found</p>;
+  useEffect(() => {
+    // Simulate fetching the recipe by ID
+    const foundRecipe = recipesData.find((r) => r.id.toString() === id);
+    setRecipe(foundRecipe);
+  }, [id]);
+
+  if (!recipe) {
+    return <p className="text-center mt-8">Loading recipe...</p>;
+  }
 
   return (
-    <div className="p-6">
-      <Link to="/" className="text-blue-500 hover:underline">&larr; Back</Link>
-      <h1 className="text-3xl font-bold my-4">{recipe.title}</h1>
-      <img src={recipe.image} alt={recipe.title} className="w-full max-w-lg rounded-lg mb-6" />
-      <h2 className="text-xl font-semibold mb-2">Ingredients</h2>
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">{recipe.name}</h1>
+      <img
+        src={recipe.image}
+        alt={recipe.name}
+        className="w-full h-64 object-cover rounded-lg mb-4"
+      />
+      <p className="text-lg mb-4">{recipe.description}</p>
+      <h2 className="text-xl font-semibold mb-2">Ingredients:</h2>
       <ul className="list-disc list-inside mb-4">
-        {recipe.ingredients.map((item, index) => (
-          <li key={index}>{item}</li>
+        {recipe.ingredients.map((ing, idx) => (
+          <li key={idx}>{ing}</li>
         ))}
       </ul>
-      <h2 className="text-xl font-semibold mb-2">Instructions</h2>
+      <h2 className="text-xl font-semibold mb-2">Instructions:</h2>
       <p>{recipe.instructions}</p>
     </div>
   );
