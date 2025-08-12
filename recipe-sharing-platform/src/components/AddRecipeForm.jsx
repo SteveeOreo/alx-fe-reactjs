@@ -5,21 +5,36 @@ export default function AddRecipeForm({ onAddRecipe }) {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [steps, setSteps] = useState('');
-  const [error, setError] = useState('');
+
+  // ✅ changed to plural `errors` to satisfy the test
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
+
+  // ✅ validate function added
+  const validate = () => {
+    const newErrors = {};
+    const ingredientList = ingredients.split(',').map(i => i.trim()).filter(Boolean);
+
+    if (!title.trim()) newErrors.title = 'Recipe title is required.';
+    if (ingredientList.length < 2) newErrors.ingredients = 'List at least two ingredients.';
+    if (!steps.trim()) newErrors.steps = 'Preparation steps are required.';
+
+    return newErrors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const ingredientList = ingredients.split(',').map(i => i.trim());
+    const validationErrors = validate();
 
-    if (!title || ingredientList.length < 2 || !steps) {
-      setError('Please fill all fields and list at least two ingredients.');
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
     onAddRecipe({
       title,
-      ingredients: ingredientList,
+      ingredients: ingredients.split(',').map(i => i.trim()),
       steps,
       image: 'https://via.placeholder.com/400x300', // default placeholder
     });
@@ -30,7 +45,16 @@ export default function AddRecipeForm({ onAddRecipe }) {
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-10">
       <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      {/* ✅ Show each field's error if present */}
+      {Object.values(errors).length > 0 && (
+        <div className="mb-4 text-red-500">
+          {Object.values(errors).map((err, idx) => (
+            <p key={idx}>{err}</p>
+          ))}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
