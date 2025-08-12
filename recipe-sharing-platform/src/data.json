@@ -1,0 +1,46 @@
+[
+    {
+      "id": 1,
+      "title": "Spaghetti Carbonara",
+      "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+      "image": "/images/carbonara-horizontal-jumbo-v2.jpg",
+      "ingredients": [
+        "200g spaghetti",
+        "100g pancetta or bacon",
+        "2 large eggs",
+        "50g grated Parmesan cheese",
+        "Black pepper to taste"
+      ],
+      "instructions": "Cook spaghetti in salted boiling water. Fry pancetta until crispy. Whisk eggs and cheese together. Drain pasta, mix with pancetta, remove from heat, stir in egg mixture, and season with pepper."
+    },
+    {
+      "id": 2,
+      "title": "Chicken Tikka Masala",
+      "summary": "Chunks of grilled chicken cooked in a smooth buttery & creamy tomato-based gravy.",
+      "image": "/images/Chicken-Tikka-Masala_0-SQ.jpg",
+      "ingredients": [
+        "500g chicken breast",
+        "1 cup yogurt",
+        "2 tbsp tikka masala paste",
+        "1 cup tomato puree",
+        "1/2 cup cream"
+      ],
+      "instructions": "Marinate chicken in yogurt and tikka paste for 1 hour. Grill until cooked. Simmer tomato puree with spices, add chicken, stir in cream, and cook until thickened."
+    },
+    {
+        "id": 2,
+        "title": "Chicken Tikka Masala",
+        "summary": "Chunks of grilled chicken in a creamy tomato-based sauce.",
+        "image": "/images/Chicken-Tikka-Masala_0-SQ.jpg",
+        "ingredients": ["Chicken", "Yogurt", "Tomato puree", "Cream", "Spices"],
+        "instructions": "Marinate chicken. Grill. Cook sauce. Combine with chicken and simmer."
+      },
+      {
+        "id": 3,
+        "title": "Vegetable Stir Fry",
+        "summary": "A quick and healthy stir fry with fresh vegetables and soy sauce.",
+        "image": "/images/Vegetable-Stir-Fry-square.jpg",
+        "ingredients": ["Broccoli", "Carrots", "Bell peppers", "Soy sauce", "Garlic"],
+        "instructions": "Chop vegetables. Stir fry with garlic. Add soy sauce and serve."
+      }
+  ]
