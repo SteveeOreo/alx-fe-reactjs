@@ -5,13 +5,9 @@ export default function AddRecipeForm({ onAddRecipe }) {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [steps, setSteps] = useState('');
-
-  // ✅ changed to plural `errors` to satisfy the test
   const [errors, setErrors] = useState({});
-
   const navigate = useNavigate();
 
-  // ✅ validate function added
   const validate = () => {
     const newErrors = {};
     const ingredientList = ingredients.split(',').map(i => i.trim()).filter(Boolean);
@@ -36,17 +32,16 @@ export default function AddRecipeForm({ onAddRecipe }) {
       title,
       ingredients: ingredients.split(',').map(i => i.trim()),
       steps,
-      image: 'https://via.placeholder.com/400x300', // default placeholder
+      image: 'https://via.placeholder.com/400x300',
     });
 
     navigate('/');
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-10">
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-10 md:mt-16">
       <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
 
-      {/* ✅ Show each field's error if present */}
       {Object.values(errors).length > 0 && (
         <div className="mb-4 text-red-500">
           {Object.values(errors).map((err, idx) => (
@@ -55,29 +50,29 @@ export default function AddRecipeForm({ onAddRecipe }) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
         <input
           type="text"
           placeholder="Recipe Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded md:p-3"
         />
         <textarea
           placeholder="Ingredients (separate with commas)"
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded md:p-3"
         />
         <textarea
           placeholder="Preparation Steps"
           value={steps}
           onChange={(e) => setSteps(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded md:p-3"
         />
         <button
           type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 md:px-6 md:py-3"
         >
           Add Recipe
         </button>
