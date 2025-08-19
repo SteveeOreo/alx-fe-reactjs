@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 // The component name is capitalized to follow React conventions.
-// The file name should be `RegistrationForm.jsx`.
+// The file name should be `RegistrationForm.jsx` unless you configure your bundler
+// (like Vite) to handle JSX in `.js` files.
 
 const RegistrationForm = () => {
   // Define state variables for each input field using useState.
