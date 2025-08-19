@@ -1,49 +1,54 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
 
-// The component name is now capitalized to follow React conventions.
+// The component name is capitalized to follow React conventions.
 // The file name should be `RegistrationForm.jsx`.
 
-// Define the validation schema using Yup.
-// This schema outlines the validation rules for each form field.
-const validationSchema = Yup.object({
-  username: Yup.string().required('Username is required'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-});
-
 const RegistrationForm = () => {
-  // Define the initial values for the form fields.
-  const initialValues = {
-    username: '',
-    email: '',
-    password: '',
-  };
+  // Define state variables for each input field using useState.
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // Define state for validation errors.
+  const [errors, setErrors] = useState({});
 
   /**
    * Handles the form submission logic.
-   * Formik automatically passes the form values and helper functions like setSubmitting.
-   * @param {object} values The current form values.
-   * @param {object} actions Helper actions from Formik, including setSubmitting.
+   * @param {object} e The form submission event object.
    */
-  const onSubmit = (values, { setSubmitting, resetForm }) => {
-    // Log the form data to the console for demonstration.
-    console.log('Form submitted:', values);
-    
-    // In a real application, you would make an API call here.
-    // We simulate an API call with a setTimeout.
-    setTimeout(() => {
-      // You can alert the user or handle the response.
-      // NOTE: In a real app, use a custom message box instead of alert().
-      alert(JSON.stringify(values, null, 2));
-      
-      // Reset the form fields to their initial values.
-      resetForm();
-      
-      // Set submitting state to false to re-enable the submit button.
-      setSubmitting(false);
-    }, 1000);
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevents the default form submission and page reload.
+
+    // Manual validation logic.
+    const validationErrors = {};
+    if (!username) {
+      validationErrors.username = 'Username is required';
+    }
+    if (!email) {
+      validationErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      validationErrors.email = 'Email address is invalid';
+    }
+    if (!password) {
+      validationErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      validationErrors.password = 'Password must be at least 6 characters';
+    }
+
+    // Set errors state and check if there are any.
+    setErrors(validationErrors);
+
+    // If no errors, proceed with form submission.
+    if (Object.keys(validationErrors).length === 0) {
+      console.log('Form submitted:', { username, email, password });
+      alert(JSON.stringify({ username, email, password }, null, 2));
+
+      // Reset the form fields after successful submission.
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setErrors({});
+    }
   };
 
   return (
@@ -52,77 +57,71 @@ const RegistrationForm = () => {
         <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
           Create an Account
         </h2>
-        {/*
-          The Formik component wraps your form and handles state, validation,
-          and submission logic for you.
-        */}
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form className="space-y-4">
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Username
-                </label>
-                {/* The Field component automatically connects the input to Formik's state. */}
-                <Field
-                  type="text"
-                  id="username"
-                  name="username"
-                  className="w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="e.g., JaneDoe"
-                />
-                {/* ErrorMessage automatically displays the validation error from Yup. */}
-                <ErrorMessage name="username" component="div" className="mt-2 text-sm text-red-600 dark:text-red-400" />
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Email Address
-                </label>
-                <Field
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="e.g., jane.doe@example.com"
-                />
-                <ErrorMessage name="email" component="div" className="mt-2 text-sm text-red-600 dark:text-red-400" />
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Password
-                </label>
-                <Field
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="••••••••"
-                />
-                <ErrorMessage name="password" component="div" className="mt-2 text-sm text-red-600 dark:text-red-400" />
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full px-5 py-2.5 text-sm font-medium text-white rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 transition-colors duration-200 ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'}`}
-              >
-                {isSubmitting ? 'Submitting...' : 'Register'}
-              </button>
-            </Form>
-          )}
-        </Formik>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label
+              htmlFor="username"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Username
+            </label>
+            {/* The input's value is controlled by the username state variable. */}
+            {/* The onChange handler updates the username state on every keystroke. */}
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="e.g., JaneDoe"
+            />
+            {/* Display validation error if it exists. */}
+            {errors.username && <div className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.username}</div>}
+          </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="e.g., jane.doe@example.com"
+            />
+            {errors.email && <div className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.email}</div>}
+          </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="••••••••"
+            />
+            {errors.password && <div className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.password}</div>}
+          </div>
+          <button
+            type="submit"
+            className="w-full px-5 py-2.5 text-sm font-medium text-white rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 transition-colors duration-200 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+          >
+            Register
+          </button>
+        </form>
       </div>
     </div>
   );
