@@ -1,6 +1,16 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 
+const fetchPosts = async () => {
+  // Simulate a small delay to make the loading state more visible.
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
+
 /**
  * A component to fetch, display, and manage posts from a public API using React Query.
  */
@@ -11,19 +21,11 @@ const PostsComponent = () => {
    * The first argument is the query key, a unique string or array that React Query
    * uses to identify and cache the data. This is crucial for refetching and sharing.
    *
-   * The second argument is the fetcher function that returns a promise.
+   * The second argument now references the named `fetchPosts` function.
    */
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['posts'],
-    queryFn: async () => {
-      // Simulate a small delay to make the loading state more visible.
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    }
+    queryFn: fetchPosts
   });
 
   // Handle the loading state.
