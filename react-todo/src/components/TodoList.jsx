@@ -2,78 +2,64 @@ import { useState } from "react";
 
 export default function TodoList() {
   const [todos, setTodos] = useState([
-    { text: "Learn React", completed: false },
-    { text: "Build a Todo App", completed: false },
+    { id: 1, text: "Learn React", completed: false },
+    { id: 2, text: "Build a Todo App", completed: false },
   ]);
-  const [input, setInput] = useState("");
+  const [newTodo, setNewTodo] = useState("");
 
-  // Add new todo
-  const addTodo = (text) => {
-    if (text.trim() === "") return;
-    setTodos([...todos, { text, completed: false }]);
-  };
-
-  // Toggle completed status
-  const toggleTodo = (index) => {
-    const updated = [...todos];
-    updated[index].completed = !updated[index].completed;
-    setTodos(updated);
-  };
-
-  // Delete a todo
-  const deleteTodo = (index) => {
-    setTodos(todos.filter((_, i) => i !== index));
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const addTodo = (e) => {
     e.preventDefault();
-    addTodo(input);
-    setInput("");
+    if (!newTodo.trim()) return;
+    setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }]);
+    setNewTodo("");
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
-      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Todo List
-      </h1>
-
-      {/* Add Todo Form */}
-      <form onSubmit={handleSubmit} className="flex gap-3">
+      <h1 className="text-2xl font-bold mb-4 text-center">Todo List</h1>
+      <form onSubmit={addTodo} className="flex mb-4">
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Add a new todo"
-          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          placeholder="Enter todo..."
+          className="flex-grow border p-2 rounded-l"
         />
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600"
         >
           Add
         </button>
       </form>
-
-      {/* Todo Items */}
-      <ul className="mt-4 space-y-3">
-        {todos.map((todo, idx) => (
+      <ul>
+        {todos.map((todo) => (
           <li
-            key={idx}
-            className="flex justify-between items-center p-3 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+            key={todo.id}
+            onClick={() => toggleTodo(todo.id)}
+            className={`flex justify-between items-center p-2 border-b cursor-pointer ${
+              todo.completed ? "line-through text-gray-500" : ""
+            }`}
           >
+            {todo.text}
             <button
-              onClick={() => toggleTodo(idx)}
-              className={`text-left flex-1 ${
-                todo.completed ? "line-through text-gray-500" : "text-gray-800"
-              }`}
-            >
-              {todo.text}
-            </button>
-            <button
-              aria-label={`delete-${idx}`}
-              onClick={() => deleteTodo(idx)}
-              className="ml-3 bg-red-500 text-white text-sm px-3 py-1 rounded-lg hover:bg-red-600 transition"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTodo(todo.id);
+              }}
+              className="text-red-500 hover:text-red-700"
             >
               Delete
             </button>

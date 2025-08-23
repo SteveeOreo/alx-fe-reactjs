@@ -11,8 +11,8 @@ describe("TodoList Component", () => {
 
   test("adds a new todo", () => {
     render(<TodoList />);
-    const input = screen.getByPlaceholderText("Add a new todo");
-    const button = screen.getByRole("button", { name: /add/i });
+    const input = screen.getByPlaceholderText("Enter todo...");
+    const button = screen.getByText(/add/i);
 
     fireEvent.change(input, { target: { value: "Write Tests" } });
     fireEvent.click(button);
@@ -22,15 +22,19 @@ describe("TodoList Component", () => {
 
   test("toggles a todo", () => {
     render(<TodoList />);
-    const todo = screen.getByRole("button", { name: "Learn React" });
+    const todo = screen.getByText("Learn React");
+
     fireEvent.click(todo);
+
     expect(todo).toHaveClass("line-through");
   });
 
   test("deletes a todo", () => {
     render(<TodoList />);
-    const deleteButton = screen.getByLabelText("delete-0");
+    const deleteButton = screen.getByText(/delete/i);
+
     fireEvent.click(deleteButton);
+
     expect(screen.queryByText("Learn React")).not.toBeInTheDocument();
   });
 });
